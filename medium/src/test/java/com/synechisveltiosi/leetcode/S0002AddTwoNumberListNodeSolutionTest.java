@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class S0002AddTwoNumberListNodeSolutionTest {
-    private final S0002AddTwoNumberListNodeSolution solution = new S0002AddTwoNumberListNodeSolution();
+    private final S0002AddTwoNumberListNodeSolution.MathAlgoSolution solution = new S0002AddTwoNumberListNodeSolution.MathAlgoSolution();
 
     private static Stream<Arguments> addTwoNumbersInput() {
         return Stream.of(

@@ -11,30 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class S0003LongestSubstringWithoutRepeatingCharsSolutionTest {
 
-    private static S0003LongestSubstringWithoutRepeatingCharsSolution solution;
+    private static S0003LongestSubstringWithoutRepeatingCharsSolution.IntegerArraySolution integerArraySolution;
+    private static S0003LongestSubstringWithoutRepeatingCharsSolution.BooleanArraySolution booleanArraySolution;
+    private static S0003LongestSubstringWithoutRepeatingCharsSolution.SetSolution setSolution;
+    private static S0003LongestSubstringWithoutRepeatingCharsSolution.MapSolution mapSolution;
 
     @BeforeAll
     static void init() {
-        solution = new S0003LongestSubstringWithoutRepeatingCharsSolution();
-    }
-
-    @ParameterizedTest
-    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
-    void lengthOfLongestSubstring(String s, int expectedMaxLen) {
-        assertEquals(expectedMaxLen, solution.lengthOfLongestSubstring(s));
-    }
-
-    @ParameterizedTest
-    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
-    void lengthOfLongestSubstring2(String s, int expectedMaxLen) {
-        assertEquals(expectedMaxLen, solution.lengthOfLongestSubstring2(s));
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
-    void lengthOfLongestSubstring3(String s, int expectedMaxLen) {
-        assertEquals(expectedMaxLen, solution.lengthOfLongestSubstring3(s));
+        integerArraySolution = new S0003LongestSubstringWithoutRepeatingCharsSolution.IntegerArraySolution();
+        booleanArraySolution = new S0003LongestSubstringWithoutRepeatingCharsSolution.BooleanArraySolution();
+        setSolution = new S0003LongestSubstringWithoutRepeatingCharsSolution.SetSolution();
+        mapSolution = new S0003LongestSubstringWithoutRepeatingCharsSolution.MapSolution();
     }
 
     private static Stream<Arguments> longestSubstringWithoutRepeatingCharInputs() {
@@ -47,5 +34,29 @@ class S0003LongestSubstringWithoutRepeatingCharsSolutionTest {
                 Arguments.of("dvdf", 3),
                 Arguments.of("abba", 2)
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
+    void lengthOfLongestSubstringIntegerArray(String s, int expectedMaxLen) {
+        assertEquals(expectedMaxLen, integerArraySolution.lengthOfLongestSubstring(s));
+    }
+
+    @ParameterizedTest
+    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
+    void lengthOfLongestSubstringBooleanArray(String s, int expectedMaxLen) {
+        assertEquals(expectedMaxLen, booleanArraySolution.lengthOfLongestSubstring(s));
+    }
+
+    @ParameterizedTest
+    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
+    void lengthOfLongestSubstringSet(String s, int expectedMaxLen) {
+        assertEquals(expectedMaxLen, setSolution.lengthOfLongestSubstring(s));
+    }
+
+    @ParameterizedTest
+    @MethodSource("longestSubstringWithoutRepeatingCharInputs")
+    void lengthOfLongestSubstringMap(String s, int expectedMaxLen) {
+        assertEquals(expectedMaxLen, mapSolution.lengthOfLongestSubstring(s));
     }
 }

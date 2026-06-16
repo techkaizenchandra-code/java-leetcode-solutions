@@ -1,10 +1,6 @@
-package com.synechisveltiosi.leetcode;
+package com.synechisveltiosi.leetcode.leetcode;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,77 +23,82 @@ public class S0001TwoSumArrayBenchmarkTest {
     private static final int BENCHMARK_TARGET = 199_997;
     private static final int FAST_BENCHMARK_ITERATIONS = 5;
 
-    private S0001TwoSumArraySolution solution;
+    private S0001TwoSumArraySolution.TwoPointerSolution twoPointerSolution;
+    private S0001TwoSumArraySolution.BruteForceSolution bruteForceSolution;
+    private S0001TwoSumArraySolution.HashTableSolution hashTableSolution;
+
     private int[] nums;
+
+    private static Stream<Arguments> twoSumInputs() {
+        return Stream.of(
+                Arguments.of(new int[]{2, 7, 11, 15}, 9, new int[]{0, 1}),
+                Arguments.of(new int[]{3, 2, 4}, 6, new int[]{1, 2}),
+                Arguments.of(new int[]{3, 3}, 6, new int[]{0, 1}),
+                Arguments.of(new int[]{-3, 4, 3, 90}, 0, new int[]{0, 2})
+        );
+    }
 
     @Setup(Level.Trial)
     @BeforeEach
     public void init() {
-        solution = new S0001TwoSumArraySolution();
+        twoPointerSolution = new S0001TwoSumArraySolution.TwoPointerSolution();
+        bruteForceSolution = new S0001TwoSumArraySolution.BruteForceSolution();
+        hashTableSolution = new S0001TwoSumArraySolution.HashTableSolution();
         nums = createBenchmarkInput();
     }
 
     @Benchmark
     public int[] bruteForce() {
-        return solution.twoSumBruteForce(nums, BENCHMARK_TARGET);
+        return bruteForceSolution.twoSumBruteForce(nums, BENCHMARK_TARGET);
     }
 
     @Benchmark
     public int[] hashMap() {
-        return solution.twoSumWithMap(nums, BENCHMARK_TARGET);
+        return hashTableSolution.twoSumWithMap(nums, BENCHMARK_TARGET);
     }
 
     @Benchmark
     public int[] twoPointer() {
-        return solution.twoSumWithTwoPointer(nums, BENCHMARK_TARGET);
+        return twoPointerSolution.twoSumWithTwoPointer(nums, BENCHMARK_TARGET);
     }
 
     @Order(1)
     @ParameterizedTest
     @MethodSource("twoSumInputs")
     void twoSumBruteForce(int[] nums, int target, int[] expected) {
-        assertArrayEquals(expected, solution.twoSumBruteForce(nums, target));
+        assertArrayEquals(expected, bruteForceSolution.twoSumBruteForce(nums, target));
     }
 
     @Order(2)
     @ParameterizedTest
     @MethodSource("twoSumInputs")
     void twoSumWithMap(int[] nums, int target, int[] expected) {
-        assertArrayEquals(expected, solution.twoSumWithMap(nums, target));
+        assertArrayEquals(expected, hashTableSolution.twoSumWithMap(nums, target));
     }
 
     @Order(3)
     @ParameterizedTest
     @MethodSource("twoSumInputs")
     void twoSumWithTwoPointer(int[] nums, int target, int[] expected) {
-        assertArrayEquals(expected, solution.twoSumWithTwoPointer(nums, target));
-    }
-
-    private static Stream<Arguments> twoSumInputs() {
-        return Stream.of(
-                Arguments.of(new int[] {2, 7, 11, 15}, 9, new int[] {0, 1}),
-                Arguments.of(new int[] {3, 2, 4}, 6, new int[] {1, 2}),
-                Arguments.of(new int[] {3, 3}, 6, new int[] {0, 1}),
-                Arguments.of(new int[] {-3, 4, 3, 90}, 0, new int[] {0, 2})
-        );
+        assertArrayEquals(expected, twoPointerSolution.twoSumWithTwoPointer(nums, target));
     }
 
     @Order(4)
     @Test
     void bruteForceReturnsExpectedIndexes() {
-        assertValidTwoSum(solution.twoSumBruteForce(nums, TEST_TARGET), TEST_TARGET);
+        assertValidTwoSum(bruteForceSolution.twoSumBruteForce(nums, TEST_TARGET), TEST_TARGET);
     }
 
     @Order(5)
     @Test
     void hashMapReturnsExpectedIndexes() {
-        assertValidTwoSum(solution.twoSumWithMap(nums, TEST_TARGET), TEST_TARGET);
+        assertValidTwoSum(hashTableSolution.twoSumWithMap(nums, TEST_TARGET), TEST_TARGET);
     }
 
     @Order(6)
     @Test
     void twoPointerReturnsExpectedIndexes() {
-        assertValidTwoSum(solution.twoSumWithTwoPointer(nums, TEST_TARGET), TEST_TARGET);
+        assertValidTwoSum(twoPointerSolution.twoSumWithTwoPointer(nums, TEST_TARGET), TEST_TARGET);
     }
 
     @Order(7)
@@ -136,9 +137,6 @@ public class S0001TwoSumArrayBenchmarkTest {
         return new BenchmarkResult(name, elapsedNanos / 1_000_000.0 / iterations);
     }
 
-    private record BenchmarkResult(String name, double millis) {
-    }
-
     private int[] createBenchmarkInput() {
         int[] values = IntStream.range(0, 100_000).toArray();
         for (int i = 0; i < values.length - 2; i++) {
@@ -150,6 +148,9 @@ public class S0001TwoSumArrayBenchmarkTest {
         values[values.length - 2] = 99_998;
         values[values.length - 1] = 99_999;
         return values;
+    }
+
+    private record BenchmarkResult(String name, double millis) {
     }
 
 }
