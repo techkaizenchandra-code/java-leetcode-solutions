@@ -2,6 +2,23 @@ package com.synechisveltiosi.leetcode;
 
 public class S0005LongestPalindromicSubstringSolution {
 
+    /**
+     * Finds the longest palindromic substring by checking every possible substring.
+     *
+     * <p>For each substring, a two-pointer palindrome check is performed.
+     * The longest substring that satisfies the palindrome condition is returned.</p>
+     *
+     * <p><b>Complexity:</b></p>
+     * <ul>
+     *   <li>Time: O(n³)
+     *     <ul>
+     *       <li>O(n²) possible substrings</li>
+     *       <li>O(n) to verify whether a substring is a palindrome</li>
+     *     </ul>
+     *   </li>
+     *   <li>Space: O(1)</li>
+     * </ul>
+     */
     static class BruteForceCheckAllSubstring {
         public String longestPalindrome(String s) {
             if (s == null || s.isEmpty()) {
