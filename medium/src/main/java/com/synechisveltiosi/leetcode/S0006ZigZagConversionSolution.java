@@ -3,68 +3,18 @@ package com.synechisveltiosi.leetcode;
 import java.util.stream.Stream;
 
 public class S0006ZigZagConversionSolution {
+    private S0006ZigZagConversionSolution() {
+        /* This utility class should not be instantiated */
+    }
+
 
     static class TraversalSimulationSolution {
-        /**
-         * Converts a string into its ZigZag representation and then reads it
-         * <p>
-         * row by row.
-         * <p>
-         * <p>
-         * <p>
-         * Example:
-         * <p>
-         * <p>
-         * <p>
-         * PAYPALISHIRING, numRows = 4
-         * <p>
-         * <p>
-         * <p>
-         * P     I     N
-         * <p>
-         * A   L S   I G
-         * <p>
-         * Y A   H R
-         * <p>
-         * P     I
-         * <p>
-         * <p>
-         * <p>
-         * Result: "PINALSIGYAHRPI"
-         * <p>
-         * <p>
-         * <p>
-         * Algorithm:
-         * <p>
-         * 1. Create a buffer for each row.
-         * <p>
-         * 2. Traverse the input string character by character.
-         * <p>
-         * 3. Append each character to the current row.
-         * <p>
-         * 4. Move downward until the last row is reached.
-         * <p>
-         * 5. Reverse direction and move upward until the first row is reached.
-         * <p>
-         * 6. Repeat until all characters are processed.
-         * <p>
-         * 7. Concatenate all rows to produce the final result.
-         * <p>
-         * <p>
-         * <p>
-         * Time Complexity: O(n)
-         * <p>
-         * Space Complexity: O(n)
-         */
-
         public String convert(String s, int numRows) {
 
             // No zigzag pattern is formed when there is only one row
             // or the number of rows is greater than the string length.
-
             if (numRows == 1 || numRows >= s.length()) {
                 return s;
-
             }
 
             // Create one buffer per row to store zigzag characters.
@@ -74,9 +24,7 @@ public class S0006ZigZagConversionSolution {
             // Movement direction:
             // +1 = moving down
             // -1 = moving up
-
             // Starts at -1 because the first character is placed in row 0,
-
             // which immediately triggers a direction change to move downward.
 
             int direction = -1;
@@ -100,20 +48,77 @@ public class S0006ZigZagConversionSolution {
 
     static class CyclePatternSolution {
         public String convert(String s, int numRows) {
+
+            // Edge cases:
+            // If only one row exists, zigzag is identical to original string.
+            // Also if number of rows is greater than string length,
+            // every character occupies its own row, so no conversion needed.
             if (numRows == 1 || numRows >= s.length()) {
                 return s;
             }
+
+            // Stores final converted string
             StringBuilder result = new StringBuilder();
+
+            // One complete zigzag cycle length
+            //
+            // Example: numRows = 4
+            //
+            // P
+            // A L
+            // Y A
+            // P
+            //
+            // Going down = 4 chars
+            // Going up diagonally = 2 chars
+            //
+            // cycle = 4 + 2 = 6
+            //
+            // Formula:
+            // cycle = 2 * numRows - 2
+
             int cycle = 2 * numRows - 2;
 
+            // Process row by row
             for (int row = 0; row < numRows; row++) {
+
+                // Pick all vertical characters for this row
                 for (int j = row; j < s.length(); j += cycle) {
+
+                    // Vertical character
                     result.append(s.charAt(j));
 
-                    int diagonal = j + cycle - 2 * row;
+                    // Middle rows have one additional diagonal character
+                    //
+                    // Example:
+                    //
+                    // Row 1:
+                    // P     I     N
+                    // A   L S   I G
+                    // Y A   H R
+                    // P     I
+                    //
+                    // For row=1:
+                    // after A comes diagonal L
+                    //
+                    // diagonal index calculation:
+                    // Middle rows contain an additional diagonal character within each cycle.
+                    // Distance from the current vertical character (j) to the diagonal character
+                    // is (cycle - 2 * row), therefore:
 
-                    if (row != 0 && row != numRows - 1 &&
+                    // diag = j + (cycle - 2 * row)
+                    // Example (numRows = 4, cycle = 6):
+                    // Row 1: 1 -> 5  (gap = 4)
+                    // Row 2: 2 -> 4  (gap = 2)
+                    int diagonal = j + (cycle - 2 * row);
+
+                    // First row and last row do NOT have diagonal chars
+                    //
+                    // Ensure diagonal index is inside string bounds
+                    if (row != 0 &&
+                            row != numRows - 1 &&
                             diagonal < s.length()) {
+
                         result.append(s.charAt(diagonal));
                     }
                 }

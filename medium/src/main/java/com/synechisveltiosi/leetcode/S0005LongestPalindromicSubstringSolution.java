@@ -1,6 +1,10 @@
 package com.synechisveltiosi.leetcode;
 
 public class S0005LongestPalindromicSubstringSolution {
+    private S0005LongestPalindromicSubstringSolution() {
+        /* This utility class should not be instantiated */
+    }
+
 
     /**
      * Finds the longest palindromic substring by checking every possible substring.
